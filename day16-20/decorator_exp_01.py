@@ -79,12 +79,12 @@ class President():
     pass
 
 
-'''海鲜线程安全的单例装饰器'''
+'''线程安全的单例装饰器'''
 from functools import wraps
 from threading import Lock
 
 def singleton(cls):
-    '''现成安全的单例装饰器'''
+    '''线程安全的单例装饰器'''
     instances = {}
     locker = Lock()
 
