@@ -10,6 +10,7 @@
 class SetOnceMappingMixin():
     '''自定义混入类'''
     __slots__ = ()
+
     def __setitem__(self, key, value):
         if key in self:
             raise KeyError(str(key) + ' already set ')

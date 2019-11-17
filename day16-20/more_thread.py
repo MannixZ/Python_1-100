@@ -32,3 +32,44 @@ class Account(object):
             new_balance = self.balance + money
             time.sleep(0.001)
             self.balance = new_balance
+
+
+class AddMonetThread(threading.Thread):
+    '''自定义线程类'''
+
+    def __init__(self, account, money):
+        self.account = account
+        self.money = money
+        # 自定义线程的初始化方法中必须调用父类的初始化方法
+        super().__init__()
+
+    def run(self):
+        # 线程其中之后要执行的操作
+        self.account.deposit(self.money)
+
+def main():
+    '''主函数'''
+    account = Account()
+    # 创建线程池
+    pool = ThreadPoolExecutor(max_workers=10)
+    futures = []
+    for _ in range(100):
+        # # 创建线程的第1种方式
+        # threading.Thread(
+        #     target=account.deposit, args=(1, )
+        # ).start()
+        # 创建线程的第2种方式
+        # AddMonetThread(account, 1).start()
+        # 创建线程的第3种方式
+        # 调用线程池中的下城来执行特定的任务
+        future = pool.submit(account.deposit, 1)
+        futures.append(future)
+    # 关闭线程池
+    pool.shutdown()
+    for future in futures:
+        future.result()
+    print(account.balance)
+
+
+if __name__ == '__main__':
+    main()
